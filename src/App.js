@@ -8,7 +8,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tasks: [] //id: unique, name, status
+      tasks: [], //id: unique, name, status
+      isDisplayForm: false
     };
   }
 
@@ -58,8 +59,21 @@ class App extends Component {
     );
   }
 
+  onToggleForm = () => {
+    this.setState({
+      isDisplayForm: !this.state.isDisplayForm
+    })
+  }
+
+  onCloseForm = () => {
+    this.setState({
+      isDisplayForm: false
+    })
+  }
+
   render() {
-    var { tasks } = this.state; // var tasks = this.state.tasks;
+    var { tasks, isDisplayForm } = this.state; // var tasks = this.state.tasks;
+    var elemTaskForm = isDisplayForm ? <TaskFrom onCloseForm={this.onCloseForm}/> : '';
     return (
       <div className="container">
         <div className="text-center">
@@ -67,12 +81,16 @@ class App extends Component {
           <hr />
         </div>
         <div className="row">
-          <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div className={isDisplayForm ? 'col-xs-4 col-sm-4 col-md-4 col-lg-4' : ''}>
             {/* TaskFrom */}
-            <TaskFrom />
+            { elemTaskForm }
           </div>
-          <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <button type="button" className="btn btn-primary">
+          <div className={isDisplayForm ? 'col-xs-8 col-sm-8 col-md-8 col-lg-8' : 'col-xs-12 col-sm-12 col-md-12 col-lg-12'}>
+            <button
+              type="button" 
+              className="btn btn-primary"
+              onClick={this.onToggleForm}
+            >
               <span className="fa fa-plus mr-5" />
               Thêm Công Việc
             </button>

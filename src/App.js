@@ -62,6 +62,29 @@ class App extends Component {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }
 
+  onUpdateStatus = (id) => {
+    var { tasks } = this.state;
+    var index = this.findIndex(id);
+    if(index !== -1){
+      tasks[index].status = !tasks[index].status;
+      this.setState({
+        tasks: tasks
+      })
+      localStorage.setItem('tasks',JSON.stringify(tasks));
+    }
+  }
+
+  findIndex = (id) => {
+    var result = -1;
+    var { tasks } = this.state;
+    tasks.forEach((task,index) => {
+      if(task.id === id) {
+        result = index;
+      }
+    });
+    return result;
+  }
+
   render() {
     var { tasks, isDisplayForm } = this.state; // var tasks = this.state.tasks;
     var elemTaskForm = isDisplayForm ? <TaskFrom onCloseForm={this.onCloseForm} onSubmit={this.onSubmit}/> : '';
@@ -92,7 +115,7 @@ class App extends Component {
             <div className="row mt-15">
               {/* List */}
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <TaskList tasks={tasks} />
+                <TaskList tasks={tasks} onUpdateStatus={this.onUpdateStatus} />
               </div>
             </div>
           </div>

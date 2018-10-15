@@ -22,30 +22,6 @@ class App extends Component {
     }
   }
 
-  onGenerateData = () => {
-    var tasks = [
-      {
-        id: this.generateID(),
-        name: 'Học lập trình',
-        status: true
-      },
-      {
-        id: this.generateID(),
-        name: 'Đi bơi',
-        status: false
-      },
-      {
-        id: this.generateID(),
-        name: 'Ngủ',
-        status: true
-      }
-    ];
-    this.setState({
-      tasks: tasks
-    });
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  };
-
   s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
@@ -71,9 +47,24 @@ class App extends Component {
     })
   }
 
+  onSubmit = (data) => {
+    var { tasks } = this.state;
+    var task = {
+      id: this.generateID(),
+      name: data.name,
+      status: data.status
+    }
+    tasks.push(task);
+
+    this.setState({
+      tasks: tasks
+    });
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }
+
   render() {
     var { tasks, isDisplayForm } = this.state; // var tasks = this.state.tasks;
-    var elemTaskForm = isDisplayForm ? <TaskFrom onCloseForm={this.onCloseForm}/> : '';
+    var elemTaskForm = isDisplayForm ? <TaskFrom onCloseForm={this.onCloseForm} onSubmit={this.onSubmit}/> : '';
     return (
       <div className="container">
         <div className="text-center">
@@ -93,13 +84,6 @@ class App extends Component {
             >
               <span className="fa fa-plus mr-5" />
               Thêm Công Việc
-            </button>
-            <button
-              type="button"
-              className="btn btn-danger ml-5"
-              onClick={this.onGenerateData}
-            >
-              Generate Data
             </button>
             {/* Search - Sort */}
             <div className="row mt-15">

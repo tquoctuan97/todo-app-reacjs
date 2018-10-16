@@ -7,7 +7,11 @@ class Control extends Component {
     return (
       <React.Fragment>
         <Search onSearch={this.props.onSearch}/>
-        <Sort />
+        <Sort 
+          onSort={this.props.onSort}
+          sortBy={this.props.sortBy}
+          sortValue={this.props.sortValue}
+          />
       </React.Fragment>
     );
   }

@@ -6,7 +6,7 @@ class Control extends Component {
   render() {
     return (
       <React.Fragment>
-        <Search />
+        <Search onSearch={this.props.onSearch}/>
         <Sort />
       </React.Fragment>
     );

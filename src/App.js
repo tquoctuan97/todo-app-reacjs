@@ -14,7 +14,8 @@ class App extends Component {
       filter: {
         name: '',
         status: -1
-      }
+      },
+      keyword: ''
     };
   }
 
@@ -140,8 +141,14 @@ class App extends Component {
     })
   }
 
+  onSearch = (keyword) => {
+    this.setState({
+      keyword: keyword
+    })
+  }
+
   render() {
-    var { tasks, isDisplayForm, taskEditing, filter} = this.state; // var tasks = this.state.tasks;
+    var { tasks, isDisplayForm, taskEditing, filter, keyword} = this.state; // var tasks = this.state.tasks;
     if(filter){
       if(filter.name){
         tasks = tasks.filter((task) => {
@@ -150,7 +157,6 @@ class App extends Component {
       }
       tasks = tasks.filter((task) => {
         if(filter.status === -1){
-          console.log(task);
           return task;
         }
         else{
@@ -158,11 +164,17 @@ class App extends Component {
         }
       });
     }
-    var elemTaskForm = isDisplayForm ? <TaskFrom 
-                                          onCloseForm={this.onCloseForm} 
-                                          onSubmit={this.onSubmit} 
-                                          task={taskEditing}
-                                        /> : '';
+    if(keyword){
+      tasks = tasks.filter((task) => {
+        return task.name.toLowerCase().indexOf(keyword) !== -1;
+      });
+    }
+    var elemTaskForm = isDisplayForm 
+      ? <TaskFrom 
+        onCloseForm={this.onCloseForm} 
+        onSubmit={this.onSubmit} 
+        task={taskEditing}
+      /> : '';
     return (
       <div className="container">
         <div className="text-center">
@@ -185,7 +197,7 @@ class App extends Component {
             </button>
             {/* Search - Sort */}
             <div className="row mt-15">
-              <Control />
+              <Control onSearch={this.onSearch}/>
             </div>
             <div className="row mt-15">
               {/* List */}

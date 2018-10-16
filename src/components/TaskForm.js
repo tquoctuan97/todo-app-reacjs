@@ -4,8 +4,35 @@ class TaskForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id:'',
       name: '',
       status: true
+    }
+  }
+
+  componentWillMount(){
+    if(this.props.task){
+      this.setState({
+        id: this.props.task.id,
+        name: this.props.task.name,
+        status: this.props.task.status
+      })
+    }
+  }
+
+  componentWillReceiveProps(nexProps){
+    if(nexProps && nexProps.task){
+      this.setState({
+        id: nexProps.task.id,
+        name: nexProps.task.name,
+        status: nexProps.task.status
+      })
+    }else if(!nexProps.task){
+      this.setState({
+        id:'',
+        name: '',
+        status: true
+      })
     }
   }
   
@@ -45,7 +72,7 @@ class TaskForm extends Component {
       <div className="panel panel-warning">
         <div className="panel-heading">
           <h3 className="panel-title">
-            Thêm Công Việc
+            {this.state.id !== '' ? 'Cập nhật công việc' : 'Thêm công việc' }
             <span 
               className="fa fa-times-circle text-right" 
               onClick={this.onCloseForm}
